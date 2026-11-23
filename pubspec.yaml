@@ -1,0 +1,30 @@
+name: file_converter
+description: Offline file converter for Android (EPUB, DOCX, TXT, images, PDF).
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.4.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  archive: ^4.5.0       # unzip EPUB / DOCX
+  xml: ^7.0.1           # parse OPF / document.xml
+  html: ^0.15.4         # EPUB chapters (XHTML) -> text
+  image: ^4.13.0        # pure-Dart image decode/encode
+  pdf: ^3.13.0          # build PDFs
+  file_picker: ^10.0.0  # pick input files + "Save as" dialog
+  share_plus: ^11.0.0   # share results to other apps
+  path_provider: ^2.1.4
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/fonts/DejaVuSans.ttf
