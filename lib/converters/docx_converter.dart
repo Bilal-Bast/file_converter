@@ -20,10 +20,12 @@ String docxToText(Uint8List bytes) {
   }
   final entry = archive.findFile('word/document.xml');
   if (entry == null) {
-    throw const FormatException('Not a valid DOCX file (word/document.xml is missing).');
+    throw const FormatException(
+        'Not a valid DOCX file (word/document.xml is missing).');
   }
 
-  final doc = XmlDocument.parse(utf8.decode(zipEntryBytes(entry), allowMalformed: true));
+  final doc = XmlDocument.parse(
+      utf8.decode(zipEntryBytes(entry), allowMalformed: true));
   final buffer = StringBuffer();
 
   void walk(XmlElement element) {
@@ -48,6 +50,8 @@ String docxToText(Uint8List bytes) {
 
   walk(doc.rootElement);
   final text = normalizeText(buffer.toString(), collapseSpaces: false);
-  if (text.trim().isEmpty) throw const FormatException('This document has no text.');
+  if (text.trim().isEmpty) {
+    throw const FormatException('This document has no text.');
+  }
   return text;
 }

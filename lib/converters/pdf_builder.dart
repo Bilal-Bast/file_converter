@@ -49,8 +49,11 @@ Future<Uint8List> buildTextPdf({
     pageFormat: PdfPageFormat.a4,
     margin: const pw.EdgeInsets.symmetric(horizontal: 48, vertical: 40),
     maxPages: 100000, // default is only 20 pages, too small for books
-    theme: pw.ThemeData.withFont(base: font, bold: font, italic: font, boldItalic: font)
-        .copyWith(defaultTextStyle: pw.TextStyle(font: font, fontSize: 11, lineSpacing: 2)),
+    theme: pw.ThemeData.withFont(
+            base: font, bold: font, italic: font, boldItalic: font)
+        .copyWith(
+            defaultTextStyle:
+                pw.TextStyle(font: font, fontSize: 11, lineSpacing: 2)),
     footer: (context) => pw.Align(
       alignment: pw.Alignment.centerRight,
       child: pw.Text('${context.pageNumber} / ${context.pagesCount}',
@@ -70,15 +73,19 @@ class PdfImageInput {
 }
 
 /// One image per A4 page (landscape pages for wide images).
-Future<Uint8List> buildImagesPdf(List<PdfImageInput> images, {String title = 'Images'}) async {
+Future<Uint8List> buildImagesPdf(List<PdfImageInput> images,
+    {String title = 'Images'}) async {
   final doc = pw.Document(title: title, creator: 'File Converter');
   for (final image in images) {
-    final format = image.width > image.height ? PdfPageFormat.a4.landscape : PdfPageFormat.a4;
+    final format = image.width > image.height
+        ? PdfPageFormat.a4.landscape
+        : PdfPageFormat.a4;
     final provider = pw.MemoryImage(image.jpgBytes);
     doc.addPage(pw.Page(
       pageFormat: format,
       margin: const pw.EdgeInsets.all(20),
-      build: (_) => pw.Center(child: pw.Image(provider, fit: pw.BoxFit.contain)),
+      build: (_) =>
+          pw.Center(child: pw.Image(provider, fit: pw.BoxFit.contain)),
     ));
   }
   return doc.save();

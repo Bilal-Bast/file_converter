@@ -19,7 +19,16 @@ enum OutputFormat {
   final String mimeType;
 }
 
-const imageExtensions = {'jpg', 'jpeg', 'png', 'webp', 'bmp', 'gif', 'tif', 'tiff'};
+const imageExtensions = {
+  'jpg',
+  'jpeg',
+  'png',
+  'webp',
+  'bmp',
+  'gif',
+  'tif',
+  'tiff'
+};
 
 String extensionOf(String fileName) =>
     p.extension(fileName).toLowerCase().replaceFirst('.', '');
@@ -57,22 +66,26 @@ List<OutputFormat> commonTargets(List<InputFile> files) {
 }
 
 class InputFile {
-  const InputFile({required this.name, required this.bytes, required this.kind});
+  const InputFile(
+      {required this.name, required this.bytes, required this.kind});
   final String name;
   final Uint8List bytes;
   final InputKind kind;
 }
 
 class ConvertedFile {
-  const ConvertedFile({required this.name, required this.bytes, required this.format});
+  const ConvertedFile(
+      {required this.name, required this.bytes, required this.format});
   final String name;
   final Uint8List bytes;
   final OutputFormat format;
 }
 
 class ConversionResult {
-  const ConversionResult.success(this.sourceName, ConvertedFile this.output) : error = null;
-  const ConversionResult.failure(this.sourceName, String this.error) : output = null;
+  const ConversionResult.success(this.sourceName, ConvertedFile this.output)
+      : error = null;
+  const ConversionResult.failure(this.sourceName, String this.error)
+      : output = null;
 
   final String sourceName;
   final ConvertedFile? output;

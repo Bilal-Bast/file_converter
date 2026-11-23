@@ -115,6 +115,15 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> _saveAll(List<ConvertedFile> files) async {
+    try {
+      final msg = await FileService.saveAll(files);
+      if (msg != null && mounted) _snack(msg);
+    } catch (e) {
+      if (mounted) _snack('Save failed: $e');
+    }
+  }
+
   Future<void> _share(List<ConvertedFile> files) async {
     try {
       await FileService.share(files);
@@ -266,11 +275,18 @@ class _HomeScreenState extends State<HomeScreen> {
           Row(children: [
             Expanded(child: _header('Results')),
             if (successful.length > 1)
-              TextButton.icon(
-                onPressed: () => _share(successful),
-                icon: const Icon(Icons.share),
-                label: const Text('Share all'),
-              ),
+              Wrap(children: [
+                TextButton.icon(
+                  onPressed: () => _saveAll(successful),
+                  icon: const Icon(Icons.download),
+                  label: const Text('Save all'),
+                ),
+                TextButton.icon(
+                  onPressed: () => _share(successful),
+                  icon: const Icon(Icons.share),
+                  label: const Text('Share all'),
+                ),
+              ]),
           ]),
           Card(
             child: Column(children: [for (final r in _results) _resultTile(r)]),

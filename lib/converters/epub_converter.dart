@@ -46,7 +46,8 @@ EpubBook parseEpub(Uint8List bytes, {String fallbackTitle = 'Untitled'}) {
   // 1. container.xml -> OPF path
   final container = read('META-INF/container.xml');
   if (container == null) {
-    throw const FormatException('Not a valid EPUB (META-INF/container.xml is missing).');
+    throw const FormatException(
+        'Not a valid EPUB (META-INF/container.xml is missing).');
   }
   final opfPath = readXml(container)
       .descendants
@@ -54,10 +55,14 @@ EpubBook parseEpub(Uint8List bytes, {String fallbackTitle = 'Untitled'}) {
       .where((e) => e.name.local == 'rootfile')
       .map((e) => e.getAttribute('full-path'))
       .firstWhere((v) => v != null && v.isNotEmpty, orElse: () => null);
-  if (opfPath == null) throw const FormatException('EPUB has no package (.opf) file.');
+  if (opfPath == null) {
+    throw const FormatException('EPUB has no package (.opf) file.');
+  }
 
   final opfBytes = read(opfPath);
-  if (opfBytes == null) throw FormatException('EPUB package file not found: $opfPath');
+  if (opfBytes == null) {
+    throw FormatException('EPUB package file not found: $opfPath');
+  }
   final opf = readXml(opfBytes);
   final opfDir = p.posix.dirname(opfPath);
   final elements = opf.descendants.whereType<XmlElement>().toList();
@@ -91,7 +96,8 @@ EpubBook parseEpub(Uint8List bytes, {String fallbackTitle = 'Untitled'}) {
     final entry = manifest[id];
     if (entry == null) continue;
     final (href, type) = entry;
-    final isHtml = type.contains('html') || RegExp(r'\.x?html?$', caseSensitive: false).hasMatch(href);
+    final isHtml = type.contains('html') ||
+        RegExp(r'\.x?html?$', caseSensitive: false).hasMatch(href);
     if (!isHtml) continue;
 
     var cleanHref = href.split('#').first;

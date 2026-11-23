@@ -9,13 +9,15 @@ import '../models.dart';
 img.Image decodeAnyImage(Uint8List bytes) {
   final decoded = img.decodeImage(bytes);
   if (decoded == null) {
-    throw const FormatException('Could not read this image (unsupported or damaged).');
+    throw const FormatException(
+        'Could not read this image (unsupported or damaged).');
   }
   return img.bakeOrientation(decoded);
 }
 
 /// Note: the `image` package can read WEBP but cannot write it.
-Uint8List encodeImage(img.Image image, OutputFormat format, {int jpgQuality = 90}) {
+Uint8List encodeImage(img.Image image, OutputFormat format,
+    {int jpgQuality = 90}) {
   return switch (format) {
     OutputFormat.jpg => img.encodeJpg(flattenAlpha(image), quality: jpgQuality),
     OutputFormat.png => img.encodePng(image),

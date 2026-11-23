@@ -14,8 +14,12 @@ Uint8List zipEntryBytes(ArchiveFile file) {
 
 /// Decodes a text file: UTF-8 (with/without BOM) or UTF-16 with BOM.
 String decodeText(Uint8List b) {
-  if (b.length >= 2 && b[0] == 0xFF && b[1] == 0xFE) return _utf16(b, 2, little: true);
-  if (b.length >= 2 && b[0] == 0xFE && b[1] == 0xFF) return _utf16(b, 2, little: false);
+  if (b.length >= 2 && b[0] == 0xFF && b[1] == 0xFE) {
+    return _utf16(b, 2, little: true);
+  }
+  if (b.length >= 2 && b[0] == 0xFE && b[1] == 0xFF) {
+    return _utf16(b, 2, little: false);
+  }
   var s = utf8.decode(b, allowMalformed: true);
   if (s.startsWith('﻿')) s = s.substring(1);
   return s;
@@ -30,9 +34,33 @@ String _utf16(Uint8List b, int start, {required bool little}) {
 }
 
 const _blockTags = {
-  'p', 'div', 'section', 'article', 'header', 'footer', 'aside', 'nav',
-  'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'ul', 'ol', 'dl', 'dt', 'dd',
-  'blockquote', 'pre', 'table', 'tr', 'hr', 'figure', 'figcaption',
+  'p',
+  'div',
+  'section',
+  'article',
+  'header',
+  'footer',
+  'aside',
+  'nav',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'li',
+  'ul',
+  'ol',
+  'dl',
+  'dt',
+  'dd',
+  'blockquote',
+  'pre',
+  'table',
+  'tr',
+  'hr',
+  'figure',
+  'figcaption',
 };
 
 /// Converts an (X)HTML chapter into readable plain text.
@@ -76,7 +104,8 @@ String normalizeText(String s, {bool collapseSpaces = true}) {
   final out = <String>[];
   var lastBlank = true;
   for (var line in lines) {
-    line = collapseSpaces ? line.replaceAll(spaces, ' ').trim() : line.trimRight();
+    line =
+        collapseSpaces ? line.replaceAll(spaces, ' ').trim() : line.trimRight();
     if (line.trim().isEmpty) {
       if (!lastBlank) out.add('');
       lastBlank = true;
